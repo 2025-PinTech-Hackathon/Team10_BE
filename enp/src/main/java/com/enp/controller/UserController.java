@@ -49,7 +49,7 @@ public class UserController {
         TextSizeOrLineGapCheckResponseDTO textSizeOrLineGapCheckResponseDTO=userService.textSizeOrLineGapCheckService(userId);
         return ApiResponse.onSuccess(textSizeOrLineGapCheckResponseDTO);
     }
-    @PostMapping("/{userId}/textsize/edit")
+    @PatchMapping("/{userId}/textsize/edit")
     public ApiResponse<TextSizeOrLineGapEditResponseDTO> textSizeOrLineGapEdit(@PathVariable Long userId, @RequestBody TextSizeOrLineGapEditRequestDTO textSizeOrLineGapEditRequestDTO){
         TextSizeOrLineGapEditResponseDTO textSizeOrLineGapEditResponseDTO=userService.textSizeOrLineGapEditService(userId,textSizeOrLineGapEditRequestDTO);
         return ApiResponse.onSuccess(textSizeOrLineGapEditResponseDTO);

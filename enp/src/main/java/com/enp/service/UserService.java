@@ -1,15 +1,19 @@
 package com.enp.service;
 
-import com.enp.domain.dto.request.SignupRequestDto;
+import com.enp.domain.dto.request.LoginRequestDTO;
+import com.enp.domain.dto.request.SignupRequestDTO;
+import com.enp.domain.dto.response.LoginResponseDTO;
 import com.enp.domain.dto.response.SignupResponseDTO;
 import com.enp.domain.entity.User;
 import com.enp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     public UserRepository userRepository;
-    public SignupResponseDTO signupService(SignupRequestDto signupRequestDto){
+    public SignupResponseDTO signupService(SignupRequestDTO signupRequestDto){
         boolean isExist=userRepository.existsByLoginId(signupRequestDto.getLoginId());
         if(!isExist){
             User user=User.builder()
@@ -26,6 +30,24 @@ public class UserService {
         return  SignupResponseDTO.builder()
                 .userId(null)
                 .isDuplicated(true)
+                .build();
+    }
+
+    public LoginResponseDTO loginService(LoginRequestDTO loginRequestDTO){
+        boolean isExist=userRepository.existsByLoginId(loginRequestDTO.getLoginId());
+        if(isExist){
+            String password = loginRequestDTO.getPassword();
+            Optional<User> user=userRepository.findByLoginId(loginRequestDTO.getLoginId());
+            if(user.get().getPassword().equals(password)){
+                return LoginResponseDTO.builder()
+                        .userId(user.get().getId())
+                        .isLogin(true)
+                        .build();
+            }
+        }
+        return LoginResponseDTO.builder()
+                .userId(null)
+                .isLogin(false)
                 .build();
     }
 }

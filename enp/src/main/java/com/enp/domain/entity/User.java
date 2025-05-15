@@ -1,10 +1,17 @@
 package com.enp.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
-
+@Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class User {
     @Id
     Long id;

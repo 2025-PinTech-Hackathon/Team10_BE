@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
     public UserService userService;
-    @PostMapping("/singup")
+    @PostMapping("/signup")
     public ApiResponse<SignupResponseDTO> signup(@RequestBody SignupRequestDTO signupRequestDto){
 
         SignupResponseDTO signupResponseDTO=userService.signupService(signupRequestDto);

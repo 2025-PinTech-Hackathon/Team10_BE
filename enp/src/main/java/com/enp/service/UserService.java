@@ -1,8 +1,10 @@
 package com.enp.service;
 
 import com.enp.domain.dto.request.LoginRequestDTO;
+import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
 import com.enp.domain.dto.response.LoginResponseDTO;
+import com.enp.domain.dto.response.MyPageEditResponseDTO;
 import com.enp.domain.dto.response.MyPageResponseDTO;
 import com.enp.domain.dto.response.SignupResponseDTO;
 import com.enp.domain.entity.User;
@@ -62,6 +64,21 @@ public class UserService {
                 .nickname(user.get().getNickname())
                 .textSize(user.get().getTextSize())
                 .lineGap(user.get().getLineGap())
+                .build();
+    }
+    public MyPageEditResponseDTO myPageEditService(Long userId, MyPageEditRequestDTO myPageEditRequestDTO){
+        Optional<User> user=userRepository.findById(userId);
+        if (myPageEditRequestDTO.getNickname() != null && !myPageEditRequestDTO.getNickname().equals(user.get().getNickname())) {
+            user.get().setNickname(myPageEditRequestDTO.getNickname());
+        }
+        if(myPageEditRequestDTO.getPassword()!=null&&!myPageEditRequestDTO.getPassword().equals(user.get().getPassword())){
+            user.get().setPassword(myPageEditRequestDTO.getPassword());
+        }
+        userRepository.save(user.get());
+        return MyPageEditResponseDTO.builder()
+                .userId(user.get().getId())
+                .nickname(user.get().getNickname())
+                .password(user.get().getPassword())
                 .build();
     }
 }

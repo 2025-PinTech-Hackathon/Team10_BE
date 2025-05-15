@@ -1,8 +1,10 @@
 package com.enp.controller;
 
 import com.enp.domain.dto.request.LoginRequestDTO;
+import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
 import com.enp.domain.dto.response.LoginResponseDTO;
+import com.enp.domain.dto.response.MyPageEditResponseDTO;
 import com.enp.domain.dto.response.MyPageResponseDTO;
 import com.enp.domain.dto.response.SignupResponseDTO;
 import com.enp.service.UserService;
@@ -33,5 +35,10 @@ public class UserController {
     public ApiResponse<MyPageResponseDTO> myPage(@PathVariable Long userId){
         MyPageResponseDTO myPageResponseDTO=userService.myPageService(userId);
         return ApiResponse.onSuccess(myPageResponseDTO);
+    }
+    @PatchMapping("/{userId}/edit")
+    public ApiResponse<MyPageEditResponseDTO> myPageEdit(@PathVariable Long userId ,@RequestBody MyPageEditRequestDTO myPageEditRequestDTO){
+        MyPageEditResponseDTO myPageEditResponseDTO=userService.myPageEditService(userId,myPageEditRequestDTO);
+        return ApiResponse.onSuccess(myPageEditResponseDTO);
     }
 }

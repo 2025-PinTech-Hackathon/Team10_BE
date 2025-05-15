@@ -3,10 +3,7 @@ package com.enp.service;
 import com.enp.domain.dto.request.LoginRequestDTO;
 import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
-import com.enp.domain.dto.response.LoginResponseDTO;
-import com.enp.domain.dto.response.MyPageEditResponseDTO;
-import com.enp.domain.dto.response.MyPageResponseDTO;
-import com.enp.domain.dto.response.SignupResponseDTO;
+import com.enp.domain.dto.response.*;
 import com.enp.domain.entity.User;
 import com.enp.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -79,6 +76,14 @@ public class UserService {
                 .userId(user.get().getId())
                 .nickname(user.get().getNickname())
                 .password(user.get().getPassword())
+                .build();
+    }
+    public MyPageEditCheckResponseDTO myPageEditCheckService(Long userId){
+        Optional<User> user=userRepository.findById(userId);
+        return MyPageEditCheckResponseDTO.builder()
+                .nickname(user.get().getNickname())
+                .loginId(user.get().getLoginId())
+                .textSize(user.get().getTextSize())
                 .build();
     }
 }

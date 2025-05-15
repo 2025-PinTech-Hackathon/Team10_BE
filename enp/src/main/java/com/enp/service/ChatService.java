@@ -22,18 +22,15 @@ public class ChatService {
     public ChatResponseDTO getChatView(Long userId) {
         List<ChatResponseDTO.ChattingDTO> chattingDTOList = new ArrayList<>();
         List<Chat> chatList = chatRepository.findAll();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         for(Chat chat : chatList){
             Boolean isAI = chat.getIsAI();
             String content = chat.getContent();
-
-            String formattedDate = chat.getDate().toLocalDateTime().format(formatter);
-
+            Timestamp date = chat.getDate();
             ChatResponseDTO.ChattingDTO chattingDTO = ChatResponseDTO.ChattingDTO.builder()
                     .isAI(isAI)
                     .content(content)
-                    .date(formattedDate)
+                    .date(date)
                     .build();
 
             chattingDTOList.add(chattingDTO);

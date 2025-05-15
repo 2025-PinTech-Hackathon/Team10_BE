@@ -2,10 +2,14 @@ package com.enp.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import java.util.List;
 
-@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class User {
     @Id

@@ -1,4 +1,4 @@
-package com.enp.domain.dto.Response;
+package com.enp.domain.dto.response;
 
 import lombok.Builder;
 

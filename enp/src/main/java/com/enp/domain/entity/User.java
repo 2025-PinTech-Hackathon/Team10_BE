@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     Long id;

@@ -10,8 +10,5 @@ public class NewspaperResponseDTO {
     private List<NewsDTO> newsList;
     private Integer textsize;
     private Integer linegap;
-
-
-
 }
 

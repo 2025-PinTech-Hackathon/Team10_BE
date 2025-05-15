@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class NewspaperController {
     private final NewspaperService newspaperService;
 
-    @GetMapping("/")
+    @GetMapping("/{userId}")
     public ApiResponse<NewspaperResponseDTO> getNewsView(@PathVariable Long userId){
         return ApiResponse.onSuccess(newspaperService.getNewsView(userId));
     }
 
-    @GetMapping("/{newsId}")
+    @GetMapping("/{userId}/{newsId}")
     public ApiResponse<NewsDetailDTO> getNewsDetail(@PathVariable Long userId, @PathVariable Long newsId){
         return ApiResponse.onSuccess(newspaperService.getNewsDetail(userId, newsId));
     }

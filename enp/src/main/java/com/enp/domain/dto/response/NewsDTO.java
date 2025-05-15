@@ -4,6 +4,6 @@ import lombok.Builder;
 
 @Builder
 public class NewsDTO{
-    String title;
-    String summary;
+    private String title;
+    private String summary;
 }

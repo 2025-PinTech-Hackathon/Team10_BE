@@ -3,11 +3,13 @@ package com.enp.service;
 import com.enp.domain.dto.request.LoginRequestDTO;
 import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
+import com.enp.domain.dto.request.TextSizeOrLineGapEditRequestDTO;
 import com.enp.domain.dto.response.*;
 import com.enp.domain.entity.User;
 import com.enp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -93,6 +95,19 @@ public class UserService {
                 .userId(user.get().getId())
                 .textSize(user.get().getTextSize())
                 .lineGap(user.get().getLineGap())
+                .build();
+    }
+    public TextSizeOrLineGapEditResponseDTO textSizeOrLineGapEditService(Long userId, TextSizeOrLineGapEditRequestDTO textSizeOrLineGapEditRequestDTO){
+        Optional<User> user=userRepository.findById(userId);
+        if(!Objects.equals(user.get().getTextSize(), textSizeOrLineGapEditRequestDTO.getTextSize())){
+            user.get().setTextSize(textSizeOrLineGapEditRequestDTO.getTextSize());
+        }
+        if(!Objects.equals(user.get().getLineGap(),textSizeOrLineGapEditRequestDTO.getLineGap())){
+            user.get().setLineGap(textSizeOrLineGapEditRequestDTO.getLineGap());
+        }
+        userRepository.save(user.get());
+        return TextSizeOrLineGapEditResponseDTO.builder()
+                .userId(user.get().getId())
                 .build();
     }
 }

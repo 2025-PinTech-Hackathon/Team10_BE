@@ -16,7 +16,7 @@ public class ChatResponseDTO {
     public static class ChattingDTO{
         private Boolean isAI;
         private String content;
-        private Timestamp date;
+        private String date;
     }
 }
 

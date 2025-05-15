@@ -86,4 +86,13 @@ public class UserService {
                 .textSize(user.get().getTextSize())
                 .build();
     }
+
+    public TextSizeOrLineGapCheckResponseDTO textSizeOrLineGapCheckService(Long userId){
+        Optional<User> user=userRepository.findById(userId);
+        return TextSizeOrLineGapCheckResponseDTO.builder()
+                .userId(user.get().getId())
+                .textSize(user.get().getTextSize())
+                .lineGap(user.get().getLineGap())
+                .build();
+    }
 }

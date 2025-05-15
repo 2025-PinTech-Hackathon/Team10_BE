@@ -43,4 +43,9 @@ public class UserController {
         MyPageEditCheckResponseDTO myPageEditCheckResponseDTO=userService.myPageEditCheckService(userId);
         return ApiResponse.onSuccess(myPageEditCheckResponseDTO);
     }
+    @GetMapping("/{userId}/textsize")
+    public ApiResponse<TextSizeOrLineGapCheckResponseDTO> textSizeOrLineGapCheck(@PathVariable Long userId){
+        TextSizeOrLineGapCheckResponseDTO textSizeOrLineGapCheckResponseDTO=userService.textSizeOrLineGapCheckService(userId);
+        return ApiResponse.onSuccess(textSizeOrLineGapCheckResponseDTO);
+    }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/news/{userId}")
+@RequestMapping("/news")
 public class NewspaperController {
     private final NewspaperService newspaperService;
 

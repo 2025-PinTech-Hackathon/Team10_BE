@@ -1,4 +1,4 @@
-package com.enp.domain.dto.Response;
+package com.enp.domain.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +10,8 @@ public class NewspaperResponseDTO {
     private List<NewsDTO> newsList;
     private Integer textsize;
     private Integer linegap;
+
+
 
 }
 

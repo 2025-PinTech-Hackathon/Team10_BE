@@ -1,7 +1,8 @@
 package com.enp.service;
 
-import com.enp.domain.dto.Response.NewsDTO;
-import com.enp.domain.dto.Response.NewspaperResponseDTO;
+import com.enp.domain.dto.response.NewsDTO;
+import com.enp.domain.dto.response.NewsDetailDTO;
+import com.enp.domain.dto.response.NewspaperResponseDTO;
 import com.enp.domain.entity.Newspaper;
 import com.enp.domain.entity.User;
 import com.enp.repository.NewspaperRepository;
@@ -10,6 +11,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 @Data
@@ -41,6 +44,30 @@ public class NewspaperService {
                 .newsList(newsList)
                 .textsize(textSize)
                 .linegap(lineGap)
+                .build();
+    }
+
+    public NewsDetailDTO getNewsDetail(Long userId, Long newsId){
+        Newspaper newspaper = newspaperRepository.findById(newsId).get();
+        User user = userRepository.findById(userId).get();
+
+        String title = newspaper.getTitle();
+        String content = newspaper.getContent();
+        String reporter = newspaper.getReporter();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = newspaper.getDate().toLocalDateTime().format(formatter);
+
+        int textSize = user.getTextSize();
+        int lineGap = user.getLineGap();
+
+
+        return NewsDetailDTO.builder()
+                .title(title)
+                .content(content)
+                .reporter(reporter)
+                .date(Timestamp.valueOf(formattedDate))
+                .textSize(textSize)
+                .lineGap(lineGap)
                 .build();
     }
 

@@ -1,10 +1,12 @@
 package com.enp.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 
 @Entity
+@Data
 public class User {
     @Id
     Long id;

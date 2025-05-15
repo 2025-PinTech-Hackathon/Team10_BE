@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 @Data
@@ -21,11 +22,11 @@ public class ChatService {
     public ChatResponseDTO getChatView(Long userId) {
         List<ChatResponseDTO.ChattingDTO> chattingDTOList = new ArrayList<>();
         List<Chat> chatList = chatRepository.findAll();
-        for(int i=0;i<chatList.size();i++){
-            Boolean isAI = chatList.get(i).getIsAI();
-            String content = chatList.get(i).getContent();
-            Timestamp date = chatList.get(i).getDate();
 
+        for(Chat chat : chatList){
+            Boolean isAI = chat.getIsAI();
+            String content = chat.getContent();
+            Timestamp date = chat.getDate();
             ChatResponseDTO.ChattingDTO chattingDTO = ChatResponseDTO.ChattingDTO.builder()
                     .isAI(isAI)
                     .content(content)

@@ -21,6 +21,11 @@ public class UserService {
                     .nickname(signupRequestDto.getNickname())
                     .loginId(signupRequestDto.getLoginId())
                     .password(signupRequestDto.getPassword())
+                    .todayQuizCount(3)
+                    .point(0L)
+                    .readCount(0L)
+                    .textSize(1)
+                    .lineGap(1)
                     .build();
             userRepository.save(user);
             return SignupResponseDTO.builder()

@@ -3,6 +3,7 @@ package com.enp.service;
 import com.enp.domain.dto.request.LoginRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
 import com.enp.domain.dto.response.LoginResponseDTO;
+import com.enp.domain.dto.response.MyPageResponseDTO;
 import com.enp.domain.dto.response.SignupResponseDTO;
 import com.enp.domain.entity.User;
 import com.enp.repository.UserRepository;
@@ -20,6 +21,11 @@ public class UserService {
                     .nickname(signupRequestDto.getNickname())
                     .loginId(signupRequestDto.getLoginId())
                     .password(signupRequestDto.getPassword())
+                    .todayQuizCount(3)
+                    .point(0L)
+                    .readCount(0L)
+                    .textSize(1)
+                    .lineGap(1)
                     .build();
             userRepository.save(user);
             return SignupResponseDTO.builder()
@@ -48,6 +54,14 @@ public class UserService {
         return LoginResponseDTO.builder()
                 .userId(null)
                 .isLogin(false)
+                .build();
+    }
+    public MyPageResponseDTO myPageService(Long userid){
+        Optional<User> user=userRepository.findById(userid);
+        return MyPageResponseDTO.builder()
+                .nickname(user.get().getNickname())
+                .textSize(user.get().getTextSize())
+                .lineGap(user.get().getLineGap())
                 .build();
     }
 }

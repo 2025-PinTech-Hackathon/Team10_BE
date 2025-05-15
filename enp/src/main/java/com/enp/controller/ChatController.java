@@ -1,13 +1,11 @@
 package com.enp.controller;
 
+import com.enp.domain.dto.request.ChatSendRequestDTO;
 import com.enp.domain.dto.response.ChatResponseDTO;
 import com.enp.service.ChatService;
 import com.enp.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,4 +16,5 @@ public class ChatController {
     public ApiResponse<ChatResponseDTO> getChatView(@PathVariable Long userId){
         return ApiResponse.onSuccess(chatService.getChatView(userId));
     }
+
 }

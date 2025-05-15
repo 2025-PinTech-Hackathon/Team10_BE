@@ -1,7 +1,47 @@
 package com.enp.service;
 
+import com.enp.domain.dto.Response.NewsDTO;
+import com.enp.domain.dto.Response.NewspaperResponseDTO;
+import com.enp.domain.entity.Newspaper;
+import com.enp.domain.entity.User;
+import com.enp.repository.NewspaperRepository;
+import com.enp.repository.UserRepository;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+@Data
 @Service
+@RequiredArgsConstructor
 public class NewspaperService {
+    private final UserRepository userRepository;
+    private final NewspaperRepository newspaperRepository;
+
+    public NewspaperResponseDTO getNewsView(Long userId){
+
+        User user = userRepository.findById(userId).get();
+        int textSize = user.getTextSize();
+        int lineGap = user.getLineGap();
+
+        List<NewsDTO> newsList = new ArrayList<>();
+        List<Newspaper> newspaperList = newspaperRepository.findAll();
+        for(int i=0;i<newspaperList.size();i++){
+            String title = newspaperList.get(i).getTitle();
+            String summary = newspaperList.get(i).getSummary();
+            NewsDTO newsDTO = NewsDTO.builder()
+                    .title(title)
+                    .summary(summary)
+                    .build();
+            newsList.add(newsDTO);
+        }
+
+        return NewspaperResponseDTO.builder()
+                .newsList(newsList)
+                .textsize(textSize)
+                .linegap(lineGap)
+                .build();
+    }
+
 }

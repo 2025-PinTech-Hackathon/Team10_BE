@@ -47,7 +47,7 @@ public class QuizService {
                 user.setTodayQuizCount(user.getTodayQuizCount()-1);
                 user.setPoint(user.getPoint()+5);
             }
-            else{
+            else if(user.getPoint()>0){
                 user.setPoint(user.getPoint()-3);
             }
         }else{

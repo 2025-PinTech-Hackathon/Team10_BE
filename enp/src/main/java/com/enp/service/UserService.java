@@ -3,7 +3,6 @@ package com.enp.service;
 import com.enp.domain.dto.request.AuthRequest;
 import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
-import com.enp.domain.dto.request.TextSizeOrLineGapEditRequestDTO;
 import com.enp.domain.dto.response.*;
 import com.enp.domain.entity.User;
 import com.enp.repository.UserRepository;
@@ -29,8 +28,6 @@ public class UserService {
                     .password(signupRequestDto.getPassword())
                     .todayQuizCount(3)
                     .point(0L)
-                    .textSize(1)
-                    .lineGap(1)
                     .build();
             User savedUser = userRepository.save(user);
             return SignupResponseDTO.builder()
@@ -69,8 +66,6 @@ public class UserService {
         return userRepository.findById(userId)
                 .map(user-> MyPageResponseDTO.builder()
                 .nickname(user.getNickname())
-                .textSize(user.getTextSize())
-                .lineGap(user.getLineGap())
                 .build())
 
                 .orElseThrow(()->new RuntimeException("마이페이지 조회 실패:userID가"+userId+"인 사용자를 찾을 수 없습니다"));
@@ -97,31 +92,7 @@ public class UserService {
         return MyPageEditCheckResponseDTO.builder()
                 .nickname(user.getNickname())
                 .loginId(user.getLoginId())
-                .textSize(user.getTextSize())
                 .build();
     }
 
-    public TextSizeOrLineGapCheckResponseDTO textSizeOrLineGapCheckService(Long userId){
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("글자크기,글간격 조회 실패: ID가 " + userId + "인 사용자를 찾을 수 없습니다."));
-        return TextSizeOrLineGapCheckResponseDTO.builder()
-                .userId(user.getId())
-                .textSize(user.getTextSize())
-                .lineGap(user.getLineGap())
-                .build();
-    }
-    public TextSizeOrLineGapEditResponseDTO textSizeOrLineGapEditService(Long userId, TextSizeOrLineGapEditRequestDTO textSizeOrLineGapEditRequestDTO){
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(" 글자크기,글간격 수정 실패: ID가 " + userId + "인 사용자를 찾을 수 없습니다."));
-        if(!Objects.equals(user.getTextSize(), textSizeOrLineGapEditRequestDTO.getTextSize())){
-            user.setTextSize(textSizeOrLineGapEditRequestDTO.getTextSize());
-        }
-        if(!Objects.equals(user.getLineGap(),textSizeOrLineGapEditRequestDTO.getLineGap())){
-            user.setLineGap(textSizeOrLineGapEditRequestDTO.getLineGap());
-        }
-        userRepository.save(user);
-        return TextSizeOrLineGapEditResponseDTO.builder()
-                .userId(user.getId())
-                .build();
-    }
 }

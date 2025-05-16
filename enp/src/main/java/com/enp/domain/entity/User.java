@@ -26,10 +26,6 @@ public class User {
     Integer todayQuizCount;
     @Column
     Long point;
-    @Column
-    Integer textSize;
-    @Column
-    Integer lineGap;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Chat> chats;
 }

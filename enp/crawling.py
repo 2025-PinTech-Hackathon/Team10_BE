@@ -69,7 +69,7 @@ def simplify_text(text):
                 {"role": "system", "content": "너는 경제 뉴스를 경제에 관한 지식이 없는 사람들도 이해할 수 있을 정도로 쉬운 말로 풀이해주고 높임말로 대답해줘"},
                 {"role": "user", "content": f"다음 글을 변경해줘:\n\n{text}"}
             ],
-            max_tokens=500,
+            max_tokens=1000,
             temperature=0.1,
         )
         return response.choices[0].message.content.strip()

@@ -9,6 +9,4 @@ public class QuizSolveResponseDTO {
     private Boolean isCorrect;
     private Long quizId;
     private String content;
-    private Integer textSize;
-    private Integer lineGap;
 }

@@ -12,6 +12,4 @@ public class NewsDetailDTO {
     private String content;
     private String reporter;
     private Timestamp date;
-    private Integer textSize;
-    private Integer lineGap;
 }

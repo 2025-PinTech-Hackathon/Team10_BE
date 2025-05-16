@@ -26,8 +26,6 @@ public class NewspaperService {
 
     public NewspaperResponseDTO getNewsView(Long userId){
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("뉴스 목록 조회"+userId + "인 사용자를 찾을 수 없습니다."));
-        int textSize = user.getTextSize();
-        int lineGap = user.getLineGap();
 
         List<NewsDTO> newsList = new ArrayList<>();
         List<Newspaper> newspaperList = newspaperRepository.findAll();
@@ -44,8 +42,6 @@ public class NewspaperService {
 
         return NewspaperResponseDTO.builder()
                 .newsList(newsList)
-                .textsize(textSize)
-                .linegap(lineGap)
                 .build();
     }
 
@@ -59,17 +55,11 @@ public class NewspaperService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = newspaper.getDate().toLocalDateTime().format(formatter);
 
-        int textSize = user.getTextSize();
-        int lineGap = user.getLineGap();
-
-
         return NewsDetailDTO.builder()
                 .title(title)
                 .content(content)
                 .reporter(reporter)
                 .date(Timestamp.valueOf(formattedDate))
-                .textSize(textSize)
-                .lineGap(lineGap)
                 .build();
     }
 

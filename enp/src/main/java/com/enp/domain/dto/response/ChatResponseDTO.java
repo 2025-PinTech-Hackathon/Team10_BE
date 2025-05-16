@@ -10,8 +10,6 @@ import java.util.List;
 @Builder
 public class ChatResponseDTO {
     private List<ChattingDTO> chatList;
-    private Integer textSize;
-    private Integer lineGap;
 
     @Data
     @Builder

@@ -1,5 +1,6 @@
 package com.enp.service;
 
+import lombok.RequiredArgsConstructor;
 import okhttp3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class GptService {
     @Value("${openai.api.key}")
     private String OPENAI_API_KEY;

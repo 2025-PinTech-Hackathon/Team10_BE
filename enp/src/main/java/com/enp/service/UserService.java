@@ -7,11 +7,13 @@ import com.enp.domain.dto.request.TextSizeOrLineGapEditRequestDTO;
 import com.enp.domain.dto.response.*;
 import com.enp.domain.entity.User;
 import com.enp.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     public UserRepository userRepository;
     public SignupResponseDTO signupService(SignupRequestDTO signupRequestDto){

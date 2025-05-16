@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-@Data
+
 @Service
 @RequiredArgsConstructor
 public class NewspaperService {

@@ -9,18 +9,20 @@ import com.enp.repository.ChatRepository;
 import com.enp.repository.UserRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONException;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-@Data
+
 @Service
 @RequiredArgsConstructor
 public class ChatService {
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
+    private final GptService gptService;
     public ChatResponseDTO getChatView(Long userId) {
         List<ChatResponseDTO.ChattingDTO> chattingDTOList = new ArrayList<>();
         List<Chat> chatList = chatRepository.findAllByUserId(userId);
@@ -49,7 +51,7 @@ public class ChatService {
                 .build();
     }
 
-    public ChatSendResponseDTO sendChat(Long userId, ChatSendRequestDTO chatSendRequestDTO) {
+    public ChatSendResponseDTO sendChat(Long userId, ChatSendRequestDTO chatSendRequestDTO) throws JSONException {
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("채팅 메시지 전송 "+userId + "인 사용자를 찾을 수 없습니다."));
         Chat userChat = Chat.builder()
                 .content(chatSendRequestDTO.getContent())
@@ -59,7 +61,7 @@ public class ChatService {
                 .build();
         chatRepository.save(userChat);
 
-        String getResponseContent = "test";
+        String getResponseContent = gptService.askGpt(chatSendRequestDTO.getContent());
         Timestamp gptResponseDate = new Timestamp(System.currentTimeMillis());
 
         Chat gptChat = Chat.builder()

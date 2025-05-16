@@ -6,6 +6,7 @@ import com.enp.domain.dto.response.ChatSendResponseDTO;
 import com.enp.service.ChatService;
 import com.enp.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +20,7 @@ public class ChatController {
     }
 
     @PostMapping("/{userId}/send")
-    public ApiResponse<ChatSendResponseDTO> sendChat(@PathVariable Long userId, @RequestBody ChatSendRequestDTO chatSendRequestDTO){
+    public ApiResponse<ChatSendResponseDTO> sendChat(@PathVariable Long userId, @RequestBody ChatSendRequestDTO chatSendRequestDTO) throws JSONException {
         return ApiResponse.onSuccess(chatService.sendChat(userId, chatSendRequestDTO));
     }
 }

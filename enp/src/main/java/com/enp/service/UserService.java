@@ -30,9 +30,11 @@ public class UserService {
                     .textSize(1)
                     .lineGap(1)
                     .build();
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
             return SignupResponseDTO.builder()
-                    .userId(user.getId())
+                    .userId(savedUser.getId())
+                    .nickname(savedUser.getNickname())
+                    .loginId(savedUser.getLoginId())
                     .isDuplicated(false)
                     .build();
         }
@@ -51,6 +53,8 @@ public class UserService {
             if(user.getPassword().equals(password)){
                 return LoginResponseDTO.builder()
                         .userId(user.getId())
+                        .loginId(user.getLoginId())
+                        .nickname(user.getNickname())
                         .isLogin(true)
                         .build();
             }
@@ -83,7 +87,7 @@ public class UserService {
         return MyPageEditResponseDTO.builder()
                 .userId(user.getId())
                 .nickname(user.getNickname())
-                .password(user.getPassword())
+                .loginId(user.getLoginId())
                 .build();
     }
     public MyPageEditCheckResponseDTO myPageEditCheckService(Long userId){

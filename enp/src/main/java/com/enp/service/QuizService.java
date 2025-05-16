@@ -27,9 +27,10 @@ public class QuizService {
         Integer textSize = user.getTextSize();
         Integer lineGap = user.getLineGap();
 
+        Quiz randomQuiz = quizRepository.findRandomQuiz().get();
         return QuizResponseDTO.builder()
-                .quizId(quizId)
-                .content(content)
+                .quizId(randomQuiz.getId())
+                .content(randomQuiz.getContent())
                 .todayQuizCount(todayQuizCount)
                 .textSize(textSize)
                 .lineGap(lineGap)

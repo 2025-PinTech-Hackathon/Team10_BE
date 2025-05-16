@@ -25,7 +25,6 @@ public class NewspaperService {
     private final NewspaperRepository newspaperRepository;
 
     public NewspaperResponseDTO getNewsView(Long userId){
-        System.out.println("userId: " + userId);
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("뉴스 목록 조회"+userId + "인 사용자를 찾을 수 없습니다."));
         int textSize = user.getTextSize();
         int lineGap = user.getLineGap();

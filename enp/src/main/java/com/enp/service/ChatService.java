@@ -1,6 +1,8 @@
 package com.enp.service;
 
+import com.enp.domain.dto.request.ChatSendRequestDTO;
 import com.enp.domain.dto.response.ChatResponseDTO;
+import com.enp.domain.dto.response.ChatSendResponseDTO;
 import com.enp.domain.entity.Chat;
 import com.enp.domain.entity.User;
 import com.enp.repository.ChatRepository;
@@ -44,6 +46,33 @@ public class ChatService {
                 .chattingDTOList(chattingDTOList)
                 .textSize(textSize)
                 .lineGap(lineGap)
+                .build();
+    }
+
+    public ChatSendResponseDTO sendChat(Long userId, ChatSendRequestDTO chatSendRequestDTO) {
+        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException(userId + "를 찾을 수 없습니다."));
+        Chat userChat = Chat.builder()
+                .content(chatSendRequestDTO.getContent())
+                .date(chatSendRequestDTO.getDate())
+                .isAI(false)
+                .user(user)
+                .build();
+        chatRepository.save(userChat);
+
+        String getResponseContent = "test";
+        Timestamp gptResponseDate = new Timestamp(System.currentTimeMillis());
+
+        Chat gptChat = Chat.builder()
+                .content(getResponseContent)
+                .date(gptResponseDate)
+                .isAI(true)
+                .user(user)
+                .build();
+        chatRepository.save(gptChat);
+
+        return ChatSendResponseDTO.builder()
+                .content(gptChat.getContent())
+                .date(gptChat.getDate())
                 .build();
     }
 }

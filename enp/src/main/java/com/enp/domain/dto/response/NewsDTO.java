@@ -6,6 +6,7 @@ import lombok.Data;
 @Builder
 @Data
 public class NewsDTO{
+    private Long NewspaperId;
     private String title;
     private String summary;
 }

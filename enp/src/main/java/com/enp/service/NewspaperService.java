@@ -35,6 +35,7 @@ public class NewspaperService {
             String title = newspaperList.get(i).getTitle();
             String summary = newspaperList.get(i).getSummary();
             NewsDTO newsDTO = NewsDTO.builder()
+                    .NewspaperId(newspaperList.get(i).getId())
                     .title(title)
                     .summary(summary)
                     .build();

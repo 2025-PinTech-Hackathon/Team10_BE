@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
@@ -76,19 +77,32 @@ public class UserService {
                 .orElseThrow(()->new RuntimeException("마이페이지 조회 실패:userID가"+userId+"인 사용자를 찾을 수 없습니다"));
     }
     public MyPageEditResponseDTO myPageEditService(Long userId, MyPageEditRequestDTO myPageEditRequestDTO){
+        // 2. DB에서 사용자 정보 조회
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("마이페이지 수정 실패: ID가 " + userId + "인 사용자를 찾을 수 없습니다."));
-        if (myPageEditRequestDTO.getNickname() != null && !myPageEditRequestDTO.getNickname().equals(user.getNickname())) {
+
+        // 3. 닉네임 변경 처리
+        // DTO에서 받은 닉네임이 null이 아니고, 비어있지 않으며, 기존 닉네임과 다를 경우에만 업데이트
+        if (StringUtils.hasText(myPageEditRequestDTO.getNickname()) &&
+                !myPageEditRequestDTO.getNickname().equals(user.getNickname())) {
             user.setNickname(myPageEditRequestDTO.getNickname());
         }
-        if(myPageEditRequestDTO.getPassword()!=null&&!myPageEditRequestDTO.getPassword().equals(user.getPassword())){
-            user.setPassword(myPageEditRequestDTO.getPassword());
+
+        // 4. 비밀번호 변경 처리
+        // DTO에서 받은 비밀번호가 null이 아니고, 비어있지 않을 경우 (즉, 사용자가 비밀번호 변경을 원할 경우)
+        if (StringUtils.hasText(myPageEditRequestDTO.getPassword())) {
+            // 새로운 비밀번호를 암호화하여 설정
+            user.setPassword(passwordEncoder.encode(myPageEditRequestDTO.getPassword()));
         }
-        userRepository.save(user);
+
+        // 5. 변경된 사용자 정보 저장 (JPA의 더티 체킹에 의해 @Transactional 범위 내에서는 자동 저장될 수 있으나, 명시적으로 save 호출도 가능)
+        userRepository.save(user); // 명시적으로 호출할 필요는 없을 수 있음
+
+        // 6. 응답 DTO 생성 및 반환
+        //    주의: 응답 DTO에 암호화된 비밀번호를 포함하지 않도록 합니다.
         return MyPageEditResponseDTO.builder()
                 .userId(user.getId())
                 .nickname(user.getNickname())
-                .loginId(user.getLoginId())
                 .build();
     }
     public MyPageEditCheckResponseDTO myPageEditCheckService(Long userId){

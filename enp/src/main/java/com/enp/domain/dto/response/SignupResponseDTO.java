@@ -13,4 +13,6 @@ import lombok.NoArgsConstructor;
 public class SignupResponseDTO {
     private Long userId;
     private Boolean isDuplicated;
+    private String nickname;
+    private String loginId;
 }

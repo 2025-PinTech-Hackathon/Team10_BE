@@ -13,4 +13,6 @@ import lombok.NoArgsConstructor;
 public class LoginResponseDTO {
     private Long userId;
     private Boolean isLogin;
+    private String nickname;
+    private String loginId;
 }

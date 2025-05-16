@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MyPageEditResponseDTO {
     private String nickname;
-    private String password;
     private Long userId;
+    private String loginId;
 }

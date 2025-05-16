@@ -43,13 +43,9 @@ public class ChatService {
         }
 
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("채팅 화면 조회 "+userId + "인 사용자를 찾을 수 없습니다."));
-        Integer textSize = user.getTextSize();
-        Integer lineGap = user.getLineGap();
 
         return ChatResponseDTO.builder()
                 .chatList(chattingDTOList)
-                .textSize(textSize)
-                .lineGap(lineGap)
                 .build();
     }
 

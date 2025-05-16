@@ -11,6 +11,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MyPageResponseDTO {
     private String nickname;
-    private Integer textSize;
-    private Integer lineGap;
 }

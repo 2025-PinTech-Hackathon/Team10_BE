@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class MyPageEditCheckResponseDTO {
     private String nickname;
     private String loginId;
-    private Integer textSize;
 }

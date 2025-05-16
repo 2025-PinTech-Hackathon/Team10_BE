@@ -24,15 +24,11 @@ public class QuizService {
         String content = quiz.getContent();
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("퀴즈 화면 "+userId + "인 사용자를 찾을 수 없습니다."));
         Integer todayQuizCount = user.getTodayQuizCount();
-        Integer textSize = user.getTextSize();
-        Integer lineGap = user.getLineGap();
 
         return QuizResponseDTO.builder()
                 .quizId(quizId)
                 .content(content)
                 .todayQuizCount(todayQuizCount)
-                .textSize(textSize)
-                .lineGap(lineGap)
                 .build();
     }
 
@@ -59,15 +55,11 @@ public class QuizService {
 
         Long quizId = randomQuiz.getId();
         String content = randomQuiz.getContent();
-        Integer textSize = user.getTextSize();
-        Integer lineGap = user.getLineGap();
 
         return QuizSolveResponseDTO.builder()
                 .isCorrect(isCorrect)
                 .quizId(quizId)
                 .content(content)
-                .textSize(textSize)
-                .lineGap(lineGap)
                 .build();
     }
 }

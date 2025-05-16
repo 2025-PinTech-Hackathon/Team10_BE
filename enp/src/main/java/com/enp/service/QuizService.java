@@ -43,9 +43,12 @@ public class QuizService {
         Boolean isCorrect = quiz.getAnswer().equals(quizSolveRequestDTO.getAnswer());
 
         if(user.getTodayQuizCount()>0){
-            user.setTodayQuizCount(user.getTodayQuizCount()-1);
             if(isCorrect){
+                user.setTodayQuizCount(user.getTodayQuizCount()-1);
                 user.setPoint(user.getPoint()+5);
+            }
+            else{
+                user.setPoint(user.getPoint()-3);
             }
         }else{
             user.setTodayQuizCount(0);

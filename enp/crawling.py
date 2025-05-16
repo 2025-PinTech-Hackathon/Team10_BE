@@ -9,8 +9,8 @@ import os
 # ✅ DB 연결 정보 설정
 DB_HOST = '127.0.0.1'
 DB_USER = 'root'      # 본인이 만든 사용자명
-DB_PASSWORD = 'jw107316@@'  # 사용자 비밀번호
-DB_NAME = 'newsdb'
+DB_PASSWORD = '1234'  # 사용자 비밀번호
+DB_NAME = 'enp'
 openai.api_key = os.getenv("OPENAI_KEY")
 # ✅ 데이터베이스 및 테이블 초기화 함수
 def init_db():

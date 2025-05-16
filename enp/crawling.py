@@ -63,7 +63,7 @@ def get_headline_urls():
 # 쉬운 단어로 풀이
 def simplify_text(text):
     try:
-        response = client.chat.completions.create(
+        response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "너는 경제 뉴스를 유아들도 이해할 수 있을 정도로 풀이해주는 역할과 줄임말도 풀어주는 역할이야"},
@@ -81,7 +81,7 @@ def summarize_text(text):
     if not text:
         return ""
     try:
-        response = client.chat.completions.create(
+        response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "너는 경제 뉴스를 한 문장으로 간결하게 요약하는 역할이야"},

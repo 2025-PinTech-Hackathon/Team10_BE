@@ -29,6 +29,6 @@ public class User {
     Integer textSize;
     @Column
     Integer lineGap;
-    @OneToMany(mappedBy = "User", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Chat> chats;
 }

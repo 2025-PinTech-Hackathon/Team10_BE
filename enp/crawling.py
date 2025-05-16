@@ -15,7 +15,7 @@ def init_db():
     conn = None
     try:
         conn = pymysql.connect(
-            host='localhost',
+            host=DB_HOST,
             port=3306,
             user=DB_USER,
             password=DB_PASSWORD,
@@ -28,7 +28,7 @@ def init_db():
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     title TEXT,
                     reporter VARCHAR(100),
-                    content TEXT,
+                    content MEDIUMTEXT,
                     date DATETIME
                 )
             """)

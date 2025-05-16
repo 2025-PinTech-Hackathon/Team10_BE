@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-    public UserService userService;
+    private final UserService userService;
     @PostMapping("/signup")
     public ApiResponse<SignupResponseDTO> signup(@RequestBody SignupRequestDTO signupRequestDto){
-
         SignupResponseDTO signupResponseDTO=userService.signupService(signupRequestDto);
-
         return ApiResponse.onSuccess(signupResponseDTO);
     }
 

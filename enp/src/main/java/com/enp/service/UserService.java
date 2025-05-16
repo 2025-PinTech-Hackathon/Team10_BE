@@ -17,7 +17,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Transactional
 public class UserService {
-    public UserRepository userRepository;
+    private final UserRepository userRepository;
     public SignupResponseDTO signupService(SignupRequestDTO signupRequestDto){
         boolean isExist=userRepository.existsByLoginId(signupRequestDto.getLoginId());
         if(!isExist){

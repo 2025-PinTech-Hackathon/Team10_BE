@@ -23,6 +23,7 @@ public class Newspaper {
     @Column
     String reporter;
     @Column
+    @Lob
     String content;
     @Column
     Timestamp date;

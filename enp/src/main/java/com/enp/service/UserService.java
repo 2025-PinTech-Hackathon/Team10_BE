@@ -72,6 +72,7 @@ public class UserService {
         return userRepository.findById(userId)
                 .map(user-> MyPageResponseDTO.builder()
                 .nickname(user.getNickname())
+                .point(user.getPoint())
                 .build())
 
                 .orElseThrow(()->new RuntimeException("마이페이지 조회 실패:userID가"+userId+"인 사용자를 찾을 수 없습니다"));

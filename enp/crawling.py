@@ -76,18 +76,29 @@ def get_article_details(url):
     reporter = reporter_tag.get_text(strip=True) if reporter_tag else '기자 미상'
 
     # ✅ 안정적인 날짜 파싱 방식: data-date-time 속성 활용
-    if date_tag and date_tag.has_attr('data-date-time'):
-        date_str = date_tag['data-date-time']  # 예: '2024-05-16 10:30:00'
+    if date_tag:
+        date_str = None
+
+    if date_tag.has_attr('data-modify-time'):
+        date_str = date_tag['data-modify-time']  # 수정된 날짜
+    elif date_tag.has_attr('data-date-time'):
+        date_str = date_tag['data-date-time']  # 작성 날짜
+
+    if date_str:
         try:
             date = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
         except Exception as e:
             print(f"[⚠️ 날짜 파싱 실패] {e} / 원본: {date_str}")
             date = None
     else:
-        print(f"[⚠️ 날짜 태그 없음] URL: {url}")
+        print(f"[⚠️ 날짜 속성 없음] URL: {url}")
         date = None
+else:
+print(f"[⚠️ 날짜 태그 없음] URL: {url}")
+date = None
 
-    return {
+
+return {
         'title': title,
         'content': content,
         'reporter': reporter,

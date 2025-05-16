@@ -27,10 +27,9 @@ public class QuizService {
         Integer textSize = user.getTextSize();
         Integer lineGap = user.getLineGap();
 
-        Quiz randomQuiz = quizRepository.findRandomQuiz().get();
         return QuizResponseDTO.builder()
-                .quizId(randomQuiz.getId())
-                .content(randomQuiz.getContent())
+                .quizId(quizId)
+                .content(content)
                 .todayQuizCount(todayQuizCount)
                 .textSize(textSize)
                 .lineGap(lineGap)
@@ -53,9 +52,10 @@ public class QuizService {
         }
 
         userRepository.save(user);
+        Quiz randomQuiz = quizRepository.findRandomQuiz().get();
 
-        Long quizId = quiz.getId();
-        String content = quiz.getContent();
+        Long quizId = randomQuiz.getId();
+        String content = randomQuiz.getContent();
         Integer textSize = user.getTextSize();
         Integer lineGap = user.getLineGap();
 

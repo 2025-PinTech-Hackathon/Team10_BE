@@ -9,11 +9,13 @@ import com.enp.domain.entity.User;
 import com.enp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
     public UserRepository userRepository;
     public SignupResponseDTO signupService(SignupRequestDTO signupRequestDto){

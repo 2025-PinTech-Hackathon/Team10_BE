@@ -3,13 +3,15 @@ from bs4 import BeautifulSoup
 import pymysql
 import re
 from datetime import datetime
+import openai
+import os
 
 # ✅ DB 연결 정보 설정
 DB_HOST = '127.0.0.1'
 DB_USER = 'root'      # 본인이 만든 사용자명
-DB_PASSWORD = '1234'  # 사용자 비밀번호
-DB_NAME = 'enp'
-
+DB_PASSWORD = 'jw107316@@'  # 사용자 비밀번호
+DB_NAME = 'newsdb'
+openai.api_key = os.getenv("OPENAI_KEY")
 # ✅ 데이터베이스 및 테이블 초기화 함수
 def init_db():
     conn = None
@@ -44,7 +46,7 @@ def init_db():
             pass  # 이미 닫혔을 경우 에러 무시
 
 
-# ✅ 1. 경제 섹션의 헤드라인 뉴스 URL 목록을 수집
+# 경제 섹션의 헤드라인 뉴스 URL 목록을 수집
 def get_headline_urls():
     url = 'https://news.naver.com/section/101'
     headers = {'User-Agent': 'Mozilla/5.0'}
@@ -58,9 +60,44 @@ def get_headline_urls():
         if 'news.naver.com' in link:
             urls.append(link)
     return urls
+# 쉬운 단어로 풀이
+def simplify_text(text):
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "너는 경제 뉴스를 유아들도 이해할 수 있을 정도로 풀이해주는 역할과 줄임말도 풀어주는 역할이야"},
+                {"role": "user", "content": f"다음 글을 변경해줘:\n\n{text}"}
+            ],
+            max_tokens=500,
+            temperature=0.1,
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        print("OpenAI API 호출 에러(simplify_text):", e)
+        return text
+
+def summarize_text(text):
+    if not text:
+        return ""
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "너는 경제 뉴스를 한 문장으로 간결하게 요약하는 역할이야"},
+                {"role": "user", "content": f"다음 내용을 한 문장으로 간결하게 요약해줘:\n\n{text}"}
+            ],
+            max_tokens=300,
+            temperature=0.1,
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        print("OpenAI API 호출 에러(summarize_text):", e)
+        return ""
 
 
-# ✅ 2. 기사 상세 정보 추출
+
+# 기사 상세 정보 추출
 def get_article_details(url):
     headers = {'User-Agent': 'Mozilla/5.0'}
     res = requests.get(url, headers=headers)
@@ -75,39 +112,34 @@ def get_article_details(url):
     content = re.sub(r'\s+', ' ', content_tag.get_text(strip=True)) if content_tag else ''
     reporter = reporter_tag.get_text(strip=True) if reporter_tag else '기자 미상'
 
-    # ✅ 안정적인 날짜 파싱 방식: data-date-time 속성 활용
+    date = None
     if date_tag:
         date_str = None
+        if date_tag.has_attr('data-modify-time'):
+            date_str = date_tag['data-modify-time']
+        elif date_tag.has_attr('data-date-time'):
+            date_str = date_tag['data-date-time']
 
-    if date_tag.has_attr('data-modify-time'):
-        date_str = date_tag['data-modify-time']  # 수정된 날짜
-    elif date_tag.has_attr('data-date-time'):
-        date_str = date_tag['data-date-time']  # 작성 날짜
+        if date_str:
+            try:
+                date = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
+            except Exception as e:
+                print(f"[⚠️ 날짜 파싱 실패] {e} / 원본: {date_str}")
 
-    if date_str:
-        try:
-            date = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
-        except Exception as e:
-            print(f"[⚠️ 날짜 파싱 실패] {e} / 원본: {date_str}")
-            date = None
-    else:
-        print(f"[⚠️ 날짜 속성 없음] URL: {url}")
-        date = None
-else:
-print(f"[⚠️ 날짜 태그 없음] URL: {url}")
-date = None
+    # GPT 호출해서 변환
+    simplified_content = simplify_text(content)
+    summary = summarize_text(content)
 
-
-return {
+    return {
         'title': title,
-        'content': content,
+        'content': simplified_content,  # 쉬운 단어로 변환된 내용
+        'summary': summary,             # 1줄 요약
         'reporter': reporter,
         'date': date,
         'url': url
     }
 
 
-# ✅ 3. DB에 저장
 def save_to_db(news_items):
     conn = pymysql.connect(
         host=DB_HOST,
@@ -129,7 +161,7 @@ def save_to_db(news_items):
                     item['reporter'],
                     item['content'],
                     item['date'],
-                    None
+                    item['summary']
                 ))
         conn.commit()
 

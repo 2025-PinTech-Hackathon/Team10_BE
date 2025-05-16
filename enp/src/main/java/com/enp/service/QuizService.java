@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class QuizService {
     private final QuizRepository quizRepository;
     private final UserRepository userRepository;
-    public QuizResponseDTO getQuizView(long userId) {
+    public QuizResponseDTO getQuizView(Long userId) {
         Quiz quiz = quizRepository.findRandomQuiz().orElseThrow();
         Long quizId = quiz.getId();
         String content = quiz.getContent();

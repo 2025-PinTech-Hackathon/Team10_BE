@@ -21,7 +21,7 @@ public class ChatService {
     private final UserRepository userRepository;
     public ChatResponseDTO getChatView(Long userId) {
         List<ChatResponseDTO.ChattingDTO> chattingDTOList = new ArrayList<>();
-        List<Chat> chatList = chatRepository.findAll();
+        List<Chat> chatList = chatRepository.findAllByUserId(userId);
 
         for(Chat chat : chatList){
             Boolean isAI = chat.getIsAI();

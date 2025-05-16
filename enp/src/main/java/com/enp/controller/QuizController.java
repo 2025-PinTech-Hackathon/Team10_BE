@@ -15,7 +15,7 @@ public class QuizController {
     private final QuizService quizService;
 
     @GetMapping("/{userId}")
-    public ApiResponse<QuizResponseDTO> getQuizView(@PathVariable long userId){
+    public ApiResponse<QuizResponseDTO> getQuizView(@PathVariable Long userId){
         return ApiResponse.onSuccess(quizService.getQuizView(userId));
     }
 

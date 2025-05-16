@@ -23,7 +23,6 @@ public class UserService {
                     .password(signupRequestDto.getPassword())
                     .todayQuizCount(3)
                     .point(0L)
-                    .readCount(0L)
                     .textSize(1)
                     .lineGap(1)
                     .build();

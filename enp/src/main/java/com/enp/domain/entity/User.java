@@ -26,8 +26,6 @@ public class User {
     @Column
     Long point;
     @Column
-    Long readCount;
-    @Column
     Integer textSize;
     @Column
     Integer lineGap;

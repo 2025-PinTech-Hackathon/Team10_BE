@@ -22,5 +22,6 @@ public class Chat {
     @Column
     Timestamp date;
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // 외래 키 매핑
     User user;
 }

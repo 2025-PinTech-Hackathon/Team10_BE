@@ -36,14 +36,26 @@ public class QuizService {
 
     public QuizSolveResponseDTO solveQuizView(Long userId, QuizSolveRequestDTO quizSolveRequestDTO) {
         Quiz quiz = quizRepository.findById(quizSolveRequestDTO.getQuizId()).get();
+        User user = userRepository.findById(userId).get();
 
         Boolean isCorrect = quiz.getAnswer().equals(quizSolveRequestDTO.getAnswer());
+
+        if(user.getTodayQuizCount()>0){
+            user.setTodayQuizCount(user.getTodayQuizCount()-1);
+            if(isCorrect){
+                user.setPoint(user.getPoint()+5);
+            }
+        }else{
+            user.setTodayQuizCount(0);
+        }
+
+        userRepository.save(user);
+
         Long quizId = quiz.getId();
         String content = quiz.getContent();
-
-        User user = userRepository.findById(userId).get();
         Integer textSize = user.getTextSize();
         Integer lineGap = user.getLineGap();
+
         return QuizSolveResponseDTO.builder()
                 .isCorrect(isCorrect)
                 .quizId(quizId)

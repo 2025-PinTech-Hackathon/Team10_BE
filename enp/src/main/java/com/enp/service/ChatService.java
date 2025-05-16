@@ -47,7 +47,7 @@ public class ChatService {
         Integer lineGap = user.getLineGap();
 
         return ChatResponseDTO.builder()
-                .chattingDTOList(chattingDTOList)
+                .chatList(chattingDTOList)
                 .textSize(textSize)
                 .lineGap(lineGap)
                 .build();
@@ -63,7 +63,8 @@ public class ChatService {
                 .build();
         chatRepository.save(userChat);
 
-        String getResponseContent = gptService.askGpt(chatSendRequestDTO.getContent());
+        //String getResponseContent = gptService.askGpt(chatSendRequestDTO.getContent());
+        String getResponseContent = "임시 대답";
         Timestamp gptResponseDate = new Timestamp(System.currentTimeMillis());
 
         Chat gptChat = Chat.builder()

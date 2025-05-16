@@ -30,9 +30,9 @@ public class UserService {
                     .textSize(1)
                     .lineGap(1)
                     .build();
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
             return SignupResponseDTO.builder()
-                    .userId(user.getId())
+                    .userId(savedUser.getId())
                     .isDuplicated(false)
                     .build();
         }

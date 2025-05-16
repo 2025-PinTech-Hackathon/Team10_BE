@@ -3,7 +3,6 @@ package com.enp.controller;
 import com.enp.domain.dto.request.AuthRequest;
 import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
-import com.enp.domain.dto.request.TextSizeOrLineGapEditRequestDTO;
 import com.enp.domain.dto.response.*;
 import com.enp.service.UserService;
 import com.enp.util.ApiResponse;
@@ -54,15 +53,5 @@ public class UserController {
     public ApiResponse<MyPageEditCheckResponseDTO> myPageEditCheck(@PathVariable Long userId){
         MyPageEditCheckResponseDTO myPageEditCheckResponseDTO=userService.myPageEditCheckService(userId);
         return ApiResponse.onSuccess(myPageEditCheckResponseDTO);
-    }
-    @GetMapping("/{userId}/textsize")
-    public ApiResponse<TextSizeOrLineGapCheckResponseDTO> textSizeOrLineGapCheck(@PathVariable Long userId){
-        TextSizeOrLineGapCheckResponseDTO textSizeOrLineGapCheckResponseDTO=userService.textSizeOrLineGapCheckService(userId);
-        return ApiResponse.onSuccess(textSizeOrLineGapCheckResponseDTO);
-    }
-    @PatchMapping("/{userId}/textsize/edit")
-    public ApiResponse<TextSizeOrLineGapEditResponseDTO> textSizeOrLineGapEdit(@PathVariable Long userId, @RequestBody TextSizeOrLineGapEditRequestDTO textSizeOrLineGapEditRequestDTO){
-        TextSizeOrLineGapEditResponseDTO textSizeOrLineGapEditResponseDTO=userService.textSizeOrLineGapEditService(userId,textSizeOrLineGapEditRequestDTO);
-        return ApiResponse.onSuccess(textSizeOrLineGapEditResponseDTO);
     }
 }

@@ -47,7 +47,7 @@ public class ChatService {
         Integer lineGap = user.getLineGap();
 
         return ChatResponseDTO.builder()
-                .chattingDTOList(chattingDTOList)
+                .chatList(chattingDTOList)
                 .textSize(textSize)
                 .lineGap(lineGap)
                 .build();

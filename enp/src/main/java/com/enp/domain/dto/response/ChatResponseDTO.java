@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class ChatResponseDTO {
-    private List<ChattingDTO> chattingDTOList;
+    private List<ChattingDTO> chatList;
     private Integer textSize;
     private Integer lineGap;
 

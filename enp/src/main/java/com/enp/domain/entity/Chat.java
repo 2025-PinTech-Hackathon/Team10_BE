@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 @Builder
 public class Chat {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column
     String content;

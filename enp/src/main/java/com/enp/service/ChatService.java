@@ -38,7 +38,7 @@ public class ChatService {
             chattingDTOList.add(chattingDTO);
         }
 
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("채팅 화면 조회 "+userId + "인 사용자를 찾을 수 없습니다."));
         Integer textSize = user.getTextSize();
         Integer lineGap = user.getLineGap();
 
@@ -50,7 +50,7 @@ public class ChatService {
     }
 
     public ChatSendResponseDTO sendChat(Long userId, ChatSendRequestDTO chatSendRequestDTO) {
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException(userId + "를 찾을 수 없습니다."));
+        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("채팅 메시지 전송 "+userId + "인 사용자를 찾을 수 없습니다."));
         Chat userChat = Chat.builder()
                 .content(chatSendRequestDTO.getContent())
                 .date(chatSendRequestDTO.getDate())

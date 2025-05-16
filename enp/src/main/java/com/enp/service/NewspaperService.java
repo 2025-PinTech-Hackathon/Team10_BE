@@ -23,7 +23,7 @@ public class NewspaperService {
 
     public NewspaperResponseDTO getNewsView(Long userId){
 
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("뉴스 목록 조회"+userId + "인 사용자를 찾을 수 없습니다."));
         int textSize = user.getTextSize();
         int lineGap = user.getLineGap();
 
@@ -47,8 +47,8 @@ public class NewspaperService {
     }
 
     public NewsDetailDTO getNewsDetail(Long userId, Long newsId){
-        Newspaper newspaper = newspaperRepository.findById(newsId).get();
-        User user = userRepository.findById(userId).get();
+        Newspaper newspaper = newspaperRepository.findById(newsId).orElseThrow(()->new RuntimeException("뉴스 세부 조회 "+ newsId + "인 사용자를 찾을 수 없습니다."));
+        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("뉴스 세부 조회 "+userId + "인 사용자를 찾을 수 없습니다."));
 
         String title = newspaper.getTitle();
         String content = newspaper.getContent();

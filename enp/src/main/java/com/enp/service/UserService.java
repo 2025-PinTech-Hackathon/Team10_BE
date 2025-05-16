@@ -1,12 +1,13 @@
 package com.enp.service;
 
-import com.enp.domain.dto.request.LoginRequestDTO;
+import com.enp.domain.dto.request.AuthRequest;
 import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
 import com.enp.domain.dto.request.TextSizeOrLineGapEditRequestDTO;
 import com.enp.domain.dto.response.*;
 import com.enp.domain.entity.User;
 import com.enp.repository.UserRepository;
+import com.enp.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.Objects;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
     public SignupResponseDTO signupService(SignupRequestDTO signupRequestDto){
         boolean isExist=userRepository.existsByLoginId(signupRequestDto.getLoginId());
         if(!isExist){
@@ -44,25 +46,24 @@ public class UserService {
                 .build();
     }
 
-    public LoginResponseDTO loginService(LoginRequestDTO loginRequestDTO){
-        boolean isExist=userRepository.existsByLoginId(loginRequestDTO.getLoginId());
-        if(isExist){
-            String password = loginRequestDTO.getPassword();
-            User user=userRepository.findByLoginId(loginRequestDTO.getLoginId()).
-                    orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다. 로그인 ID: " + loginRequestDTO.getLoginId())); // 사용자 정의 예외
-            if(user.getPassword().equals(password)){
-                return LoginResponseDTO.builder()
-                        .userId(user.getId())
-                        .loginId(user.getLoginId())
-                        .nickname(user.getNickname())
-                        .isLogin(true)
-                        .build();
-            }
+    public AuthResponse loginService(AuthRequest authRequest){
+        User user = userRepository.findByLoginId(authRequest.getLoginId())
+                .orElseThrow(() -> new RuntimeException("사용자 없음"));
+        if(!Objects.equals(authRequest.getPassword(), user.getPassword())) {
+            return AuthResponse.builder()
+                    .isLogin(false)
+                    .build();
         }
-        return LoginResponseDTO.builder()
-                .userId(null)
-                .isLogin(false)
-                .build();
+        // 3. 응답 DTO 만들기
+        String jwt = jwtUtil.generateToken(authRequest.getLoginId());
+        AuthResponse response = new AuthResponse();
+        response.setToken(jwt);
+        response.setUserId(user.getId());
+        response.setIsLogin(true);
+        response.setNickname(user.getNickname());
+        response.setLoginId(user.getLoginId());
+
+        return response;
     }
     public MyPageResponseDTO myPageService(Long userId){
         return userRepository.findById(userId)

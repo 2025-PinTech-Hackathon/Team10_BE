@@ -63,8 +63,7 @@ public class ChatService {
                 .build();
         chatRepository.save(userChat);
 
-        //String getResponseContent = gptService.askGpt(chatSendRequestDTO.getContent());
-        String getResponseContent = "임시 대답";
+        String getResponseContent = gptService.askGpt(chatSendRequestDTO.getContent());
         Timestamp gptResponseDate = new Timestamp(System.currentTimeMillis());
 
         Chat gptChat = Chat.builder()

@@ -7,6 +7,7 @@ import com.enp.service.ChatService;
 import com.enp.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 public class ChatController {
     private final ChatService chatService;
     @GetMapping("")
-    public ApiResponse<ChatResponseDTO> getChatView(@PathVariable Long userId){
-        return ApiResponse.onSuccess(chatService.getChatView(userId));
+    public ApiResponse<ChatResponseDTO> getChatView(@AuthenticationPrincipal String loginId){
+        return ApiResponse.onSuccess(chatService.getChatView(loginId));
     }
 
     @PostMapping("/send")
-    public ApiResponse<ChatSendResponseDTO> sendChat(@PathVariable Long userId, @RequestBody ChatSendRequestDTO chatSendRequestDTO) throws JSONException {
-        return ApiResponse.onSuccess(chatService.sendChat(userId, chatSendRequestDTO));
+    public ApiResponse<ChatSendResponseDTO> sendChat(@AuthenticationPrincipal String loginId, @RequestBody ChatSendRequestDTO chatSendRequestDTO) throws JSONException {
+        return ApiResponse.onSuccess(chatService.sendChat(loginId, chatSendRequestDTO));
     }
 }

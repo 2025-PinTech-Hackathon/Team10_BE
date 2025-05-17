@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -40,18 +41,18 @@ public class UserController {
     }
 
     @GetMapping("")
-    public ApiResponse<MyPageResponseDTO> myPage(@PathVariable Long userId){
-        MyPageResponseDTO myPageResponseDTO=userService.myPageService(userId);
+    public ApiResponse<MyPageResponseDTO> myPage(@AuthenticationPrincipal String loginId){
+        MyPageResponseDTO myPageResponseDTO=userService.myPageService(loginId);
         return ApiResponse.onSuccess(myPageResponseDTO);
     }
     @PatchMapping("/edit")
-    public ApiResponse<MyPageEditResponseDTO> myPageEdit(@PathVariable Long userId ,@RequestBody MyPageEditRequestDTO myPageEditRequestDTO){
-        MyPageEditResponseDTO myPageEditResponseDTO=userService.myPageEditService(userId,myPageEditRequestDTO);
+    public ApiResponse<MyPageEditResponseDTO> myPageEdit(@AuthenticationPrincipal String loginId, @RequestBody MyPageEditRequestDTO myPageEditRequestDTO){
+        MyPageEditResponseDTO myPageEditResponseDTO=userService.myPageEditService(loginId,myPageEditRequestDTO);
         return ApiResponse.onSuccess(myPageEditResponseDTO);
     }
     @GetMapping("/mypage")
-    public ApiResponse<MyPageEditCheckResponseDTO> myPageEditCheck(@PathVariable Long userId){
-        MyPageEditCheckResponseDTO myPageEditCheckResponseDTO=userService.myPageEditCheckService(userId);
+    public ApiResponse<MyPageEditCheckResponseDTO> myPageEditCheck(@AuthenticationPrincipal String loginId){
+        MyPageEditCheckResponseDTO myPageEditCheckResponseDTO=userService.myPageEditCheckService(loginId);
         return ApiResponse.onSuccess(myPageEditCheckResponseDTO);
     }
 }

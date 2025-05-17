@@ -5,6 +5,7 @@ import com.enp.domain.dto.response.NewspaperResponseDTO;
 import com.enp.service.NewspaperService;
 import com.enp.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,13 +17,13 @@ public class NewspaperController {
     private final NewspaperService newspaperService;
 
     @GetMapping("")
-    public ApiResponse<NewspaperResponseDTO> getNewsView(@PathVariable Long userId){
-        return ApiResponse.onSuccess(newspaperService.getNewsView(userId));
+    public ApiResponse<NewspaperResponseDTO> getNewsView(@AuthenticationPrincipal String loginId){
+        return ApiResponse.onSuccess(newspaperService.getNewsView(loginId));
     }
 
     @GetMapping("/{newsId}")
-    public ApiResponse<NewsDetailDTO> getNewsDetail(@PathVariable Long userId, @PathVariable Long newsId){
-        return ApiResponse.onSuccess(newspaperService.getNewsDetail(userId, newsId));
+    public ApiResponse<NewsDetailDTO> getNewsDetail(@AuthenticationPrincipal String loginId, @PathVariable Long newsId){
+        return ApiResponse.onSuccess(newspaperService.getNewsDetail(loginId, newsId));
     }
 
 }

@@ -4,6 +4,7 @@ import com.enp.domain.dto.request.AuthRequest;
 import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
 import com.enp.domain.dto.response.*;
+import com.enp.domain.entity.Item;
 import com.enp.service.UserService;
 import com.enp.util.ApiResponse;
 import com.enp.util.JwtUtil;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -55,4 +57,10 @@ public class UserController {
         MyPageEditCheckResponseDTO myPageEditCheckResponseDTO=userService.myPageEditCheckService(loginId);
         return ApiResponse.onSuccess(myPageEditCheckResponseDTO);
     }
+    @PostMapping("/item")
+    public ApiResponse<ItemResponseDTO> purchase(@AuthenticationPrincipal String loginId, @RequestBody Long itemId){
+        ItemResponseDTO  itemResponseDTO = userService.purchaseItem(itemId, loginId);
+        return ApiResponse.onSuccess(itemResponseDTO);
+    }
+
 }

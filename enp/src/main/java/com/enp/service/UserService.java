@@ -4,7 +4,9 @@ import com.enp.domain.dto.request.AuthRequest;
 import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
 import com.enp.domain.dto.response.*;
+import com.enp.domain.entity.Item;
 import com.enp.domain.entity.User;
+import com.enp.repository.ItemRepository;
 import com.enp.repository.UserRepository;
 import com.enp.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
     private final JwtUtil jwtUtil;
     public SignupResponseDTO signupService(SignupRequestDTO signupRequestDto){
         if (userRepository.existsByLoginId(signupRequestDto.getLoginId())) {
@@ -115,4 +119,16 @@ public class UserService {
                 .build();
     }
 
+    public ItemResponseDTO purchaseItem(Long itemId, String loginId) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        Optional<User> user = userRepository.findByLoginId(loginId);
+        Long userPoint = user.get().getPoint();
+        Long itemPrice = item.get().getPrice();
+        if(userPoint>=itemPrice){
+            user.get().setPoint(userPoint-itemPrice);
+            userRepository.save(user.get());
+            return ItemResponseDTO.builder().isSuccess(true).reservedPoint(userPoint-itemPrice).build();
+        }
+        return ItemResponseDTO.builder().isSuccess(false).reservedPoint(userPoint).build();
+    }
 }

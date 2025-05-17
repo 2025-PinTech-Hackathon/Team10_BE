@@ -27,7 +27,7 @@ public class ChatService {
     private final GptService gptService;
     public ChatResponseDTO getChatView(String loginId) {
         List<ChatResponseDTO.ChattingDTO> chattingDTOList = new ArrayList<>();
-        List<Chat> chatList = chatRepository.findAllByLoginId(loginId);
+        List<Chat> chatList = chatRepository.findAllById(userRepository.findByLoginId(loginId).get().getId());
 
         for(Chat chat : chatList){
             Boolean isAI = chat.getIsAI();

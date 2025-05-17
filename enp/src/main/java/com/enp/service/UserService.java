@@ -3,6 +3,7 @@ package com.enp.service;
 import com.enp.domain.dto.request.AuthRequest;
 import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
+import com.enp.domain.dto.request.itemRequestDTO;
 import com.enp.domain.dto.response.*;
 import com.enp.domain.entity.Item;
 import com.enp.domain.entity.User;
@@ -119,8 +120,8 @@ public class UserService {
                 .build();
     }
 
-    public ItemResponseDTO purchaseItem(Long itemId, String loginId) {
-        Optional<Item> item = itemRepository.findById(itemId);
+    public ItemResponseDTO purchaseItem(itemRequestDTO itemId, String loginId) {
+        Optional<Item> item = itemRepository.findById(itemId.getItemId());
         Optional<User> user = userRepository.findByLoginId(loginId);
         Long userPoint = user.get().getPoint();
         Long itemPrice = item.get().getPrice();

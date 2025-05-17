@@ -3,6 +3,7 @@ package com.enp.controller;
 import com.enp.domain.dto.request.AuthRequest;
 import com.enp.domain.dto.request.MyPageEditRequestDTO;
 import com.enp.domain.dto.request.SignupRequestDTO;
+import com.enp.domain.dto.request.itemRequestDTO;
 import com.enp.domain.dto.response.*;
 import com.enp.domain.entity.Item;
 import com.enp.service.UserService;
@@ -58,7 +59,7 @@ public class UserController {
         return ApiResponse.onSuccess(myPageEditCheckResponseDTO);
     }
     @PostMapping("/item")
-    public ApiResponse<ItemResponseDTO> purchase(@AuthenticationPrincipal String loginId, @RequestBody Long itemId){
+    public ApiResponse<ItemResponseDTO> purchase(@AuthenticationPrincipal String loginId, @RequestBody itemRequestDTO itemId){
         ItemResponseDTO  itemResponseDTO = userService.purchaseItem(itemId, loginId);
         return ApiResponse.onSuccess(itemResponseDTO);
     }

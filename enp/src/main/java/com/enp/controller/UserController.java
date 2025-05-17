@@ -39,17 +39,17 @@ public class UserController {
         return ApiResponse.onSuccess(authResponse);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("")
     public ApiResponse<MyPageResponseDTO> myPage(@PathVariable Long userId){
         MyPageResponseDTO myPageResponseDTO=userService.myPageService(userId);
         return ApiResponse.onSuccess(myPageResponseDTO);
     }
-    @PatchMapping("/{userId}/edit")
+    @PatchMapping("/edit")
     public ApiResponse<MyPageEditResponseDTO> myPageEdit(@PathVariable Long userId ,@RequestBody MyPageEditRequestDTO myPageEditRequestDTO){
         MyPageEditResponseDTO myPageEditResponseDTO=userService.myPageEditService(userId,myPageEditRequestDTO);
         return ApiResponse.onSuccess(myPageEditResponseDTO);
     }
-    @GetMapping("/{userId}/mypage")
+    @GetMapping("/mypage")
     public ApiResponse<MyPageEditCheckResponseDTO> myPageEditCheck(@PathVariable Long userId){
         MyPageEditCheckResponseDTO myPageEditCheckResponseDTO=userService.myPageEditCheckService(userId);
         return ApiResponse.onSuccess(myPageEditCheckResponseDTO);

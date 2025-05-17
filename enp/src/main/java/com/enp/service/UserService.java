@@ -127,8 +127,8 @@ public class UserService {
         if(userPoint>=itemPrice){
             user.get().setPoint(userPoint-itemPrice);
             userRepository.save(user.get());
-            return ItemResponseDTO.builder().isSuccess(true).reservedPoint(userPoint-itemPrice).build();
+            return ItemResponseDTO.builder().isPurchase(true).reservedPoint(userPoint-itemPrice).build();
         }
-        return ItemResponseDTO.builder().isSuccess(false).reservedPoint(userPoint).build();
+        return ItemResponseDTO.builder().isPurchase(false).reservedPoint(userPoint).build();
     }
 }

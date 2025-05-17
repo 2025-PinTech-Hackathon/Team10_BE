@@ -25,9 +25,9 @@ public class ChatService {
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
     private final GptService gptService;
-    public ChatResponseDTO getChatView(Long userId) {
+    public ChatResponseDTO getChatView(String loginId) {
         List<ChatResponseDTO.ChattingDTO> chattingDTOList = new ArrayList<>();
-        List<Chat> chatList = chatRepository.findAllByUserId(userId);
+        List<Chat> chatList = chatRepository.findAllByLoginId(loginId);
 
         for(Chat chat : chatList){
             Boolean isAI = chat.getIsAI();
@@ -42,15 +42,15 @@ public class ChatService {
             chattingDTOList.add(chattingDTO);
         }
 
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("채팅 화면 조회 "+userId + "인 사용자를 찾을 수 없습니다."));
+        User user = userRepository.findByLoginId(loginId).orElseThrow(()->new RuntimeException("채팅 화면 조회 "+loginId + "인 사용자를 찾을 수 없습니다."));
 
         return ChatResponseDTO.builder()
                 .chatList(chattingDTOList)
                 .build();
     }
 
-    public ChatSendResponseDTO sendChat(Long userId, ChatSendRequestDTO chatSendRequestDTO) throws JSONException {
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("채팅 메시지 전송 "+userId + "인 사용자를 찾을 수 없습니다."));
+    public ChatSendResponseDTO sendChat(String loginId, ChatSendRequestDTO chatSendRequestDTO) throws JSONException {
+        User user = userRepository.findByLoginId(loginId).orElseThrow(()->new RuntimeException("채팅 메시지 전송 " + loginId + "인 사용자를 찾을 수 없습니다."));
         Chat userChat = Chat.builder()
                 .content(chatSendRequestDTO.getContent())
                 .date(chatSendRequestDTO.getDate())

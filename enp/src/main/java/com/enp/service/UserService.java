@@ -68,19 +68,19 @@ public class UserService {
 
         return response;
     }
-    public MyPageResponseDTO myPageService(Long userId){
-        return userRepository.findById(userId)
+    public MyPageResponseDTO myPageService(String loginId){
+        return userRepository.findByLoginId(loginId)
                 .map(user-> MyPageResponseDTO.builder()
                 .nickname(user.getNickname())
                 .point(user.getPoint())
                 .build())
 
-                .orElseThrow(()->new RuntimeException("마이페이지 조회 실패:userID가"+userId+"인 사용자를 찾을 수 없습니다"));
+                .orElseThrow(()->new RuntimeException("마이페이지 조회 실패:userID가"+loginId +"인 사용자를 찾을 수 없습니다"));
     }
-    public MyPageEditResponseDTO myPageEditService(Long userId, MyPageEditRequestDTO myPageEditRequestDTO){
+    public MyPageEditResponseDTO myPageEditService(String loginId, MyPageEditRequestDTO myPageEditRequestDTO){
         // 2. DB에서 사용자 정보 조회
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("마이페이지 수정 실패: ID가 " + userId + "인 사용자를 찾을 수 없습니다."));
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new RuntimeException("마이페이지 수정 실패: ID가 " + loginId + "인 사용자를 찾을 수 없습니다."));
 
         // 3. 닉네임 변경 처리
         // DTO에서 받은 닉네임이 null이 아니고, 비어있지 않으며, 기존 닉네임과 다를 경우에만 업데이트
@@ -106,9 +106,9 @@ public class UserService {
                 .nickname(user.getNickname())
                 .build();
     }
-    public MyPageEditCheckResponseDTO myPageEditCheckService(Long userId){
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("마이페이지 수정 조회 실패: ID가 " + userId + "인 사용자를 찾을 수 없습니다."));
+    public MyPageEditCheckResponseDTO myPageEditCheckService(String loginId){
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new RuntimeException("마이페이지 수정 조회 실패: ID가 " + loginId + "인 사용자를 찾을 수 없습니다."));
         return MyPageEditCheckResponseDTO.builder()
                 .nickname(user.getNickname())
                 .loginId(user.getLoginId())

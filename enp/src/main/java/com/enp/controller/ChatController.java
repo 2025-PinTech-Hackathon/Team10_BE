@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/chat")
 public class ChatController {
     private final ChatService chatService;
-    @GetMapping("/{userId}")
+    @GetMapping("")
     public ApiResponse<ChatResponseDTO> getChatView(@PathVariable Long userId){
         return ApiResponse.onSuccess(chatService.getChatView(userId));
     }
 
-    @PostMapping("/{userId}/send")
+    @PostMapping("/send")
     public ApiResponse<ChatSendResponseDTO> sendChat(@PathVariable Long userId, @RequestBody ChatSendRequestDTO chatSendRequestDTO) throws JSONException {
         return ApiResponse.onSuccess(chatService.sendChat(userId, chatSendRequestDTO));
     }

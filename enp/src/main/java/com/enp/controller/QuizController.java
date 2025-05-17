@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class QuizController {
     private final QuizService quizService;
 
-    @GetMapping("/{userId}")
+    @GetMapping("")
     public ApiResponse<QuizResponseDTO> getQuizView(@PathVariable Long userId){
         return ApiResponse.onSuccess(quizService.getQuizView(userId));
     }
 
-    @PostMapping("/{userId}/solve")
+    @PostMapping("/solve")
     public ApiResponse<QuizSolveResponseDTO> solveQuizView(@PathVariable Long userId,
                                                            @RequestBody QuizSolveRequestDTO quizSolveRequestDTO){
         return ApiResponse.onSuccess(quizService.solveQuizView(userId, quizSolveRequestDTO));
